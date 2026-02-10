@@ -1,69 +1,87 @@
-# Security Summary
+# Security Summary - Keycloak 15 Legacy Branch
 
-## Vulnerability Remediation
+## ⚠️ CRITICAL: Known Vulnerabilities
 
-All security vulnerabilities in dependencies have been addressed by updating to the latest stable versions.
+**This legacy branch is built for Keycloak 15.0.1, which contains 26+ known security vulnerabilities.**
 
-### Vulnerabilities Fixed
+### Overview
 
-#### AssertJ Core
-- **Original Version**: 3.23.1
-- **Updated Version**: 3.27.7
-- **Vulnerability**: XML External Entity (XXE) vulnerability when parsing untrusted XML via isXmlEqualTo assertion
-- **Status**: ✅ Fixed
+This is a **LEGACY COMPATIBILITY BRANCH ONLY**. Keycloak 15.0.1 has numerous critical security vulnerabilities that have been patched in later versions. This branch should only be used by organizations that:
 
-#### Keycloak Dependencies
-- **Original Version**: 17.0.0
-- **Updated Version**: 26.2.2
-- **Vulnerabilities Fixed** (28 CVEs):
-  - Keycloak mTLS Authentication Bypass via Reverse Proxy TLS Termination
-  - Keycloak Denial of Service vulnerability
-  - Keycloak hostname verification issues
-  - Inefficient Regular Expression Complexity
-  - Session fixation in Elytron SAML adapters
-  - Open Redirect vulnerability
-  - Admin API privilege escalation
-  - Sensitive information exposure in Pushed Authorization Requests (PAR)
-  - Path traversal vulnerabilities in redirection validation
-  - Unvalidated cross-origin messages in checkLoginIframe (DDoS)
-  - Improper Client Certificate Validation for OAuth/OpenID clients
-  - User impersonation via stolen UUID code
-  - Cross-site scripting when validating URI-schemes on SAML and OIDC
-  - Privilege escalation on Token Exchange feature
-- **Status**: ✅ All Fixed
+1. Cannot immediately upgrade from Keycloak 15
+2. Understand and accept the security risks
+3. Have compensating security controls in place
+4. Are actively planning migration to current Keycloak versions
 
-### Build Configuration Changes
+### Known Vulnerabilities in Keycloak 15.0.1
 
-- **Java Version**: Updated from 8 to 17 (required by Keycloak 26.2.2)
-- **Source/Target Compatibility**: Java 17
-- **Test Framework**: All 15 unit tests passing with updated dependencies
+The following vulnerabilities exist in Keycloak 15.0.1 (and affect all users of Keycloak 15):
 
-### Security Scanning Results
+#### Critical Vulnerabilities
+- **mTLS Authentication Bypass** via Reverse Proxy TLS Termination (Patched: 26.0.6+)
+- **Denial of Service** vulnerability (Patched: 24.0.0+)
+- **Session Fixation** in Elytron SAML adapters (Patched: 22.0.12+)
+- **Privilege Escalation** on Token Exchange feature (Patched: 18.0.0+)
+- **User Impersonation** via stolen UUID code (Patched: 21.0.1+)
+- **Admin API Privilege Escalation** (Patched: 24.0.5+)
 
-- **CodeQL Scan**: ✅ No vulnerabilities found
-- **Code Review**: ✅ No issues found
-- **Dependency Vulnerabilities**: ✅ All resolved
+#### High Severity Vulnerabilities
+- **Hostname Verification** issues (Patched: 26.2.2+)
+- **Inefficient Regular Expression Complexity** (Patched: 24.0.9+)
+- **Open Redirect** vulnerability (Patched: 25.0.6+)
+- **Path Traversal** in redirection validation (Patched: 22.0.10+)
+- **Cross-Site Scripting (XSS)** when validating URI-schemes (Patched: 21.1.2+)
+- **Improper Authorization** (Patched: 15.1.1+)
+- **Improper Client Certificate Validation** (Patched: 21.1.2+)
+- **Sensitive Information Exposure** in PAR (Patched: 24.0.5+)
+- **Unvalidated Cross-Origin Messages** leading to DDoS (Patched: 22.0.10+)
+- **Redirect URI Validation Bypass** (Patched: 23.0.3+)
+- **WebAuthn Registration** vulnerability (Patched: 15.1.0+)
 
-## Compatibility Notes
+### Test Dependencies
 
-The mapper is built against Keycloak 26.2.2 but uses only stable SPI interfaces, making it compatible with:
-- **Recommended**: Keycloak 26.2.2+ running on Java 17+
-- **Minimum**: Keycloak 17+ running on Java 17+
+#### AssertJ (Test Only - Not Shipped)
+- **Version**: 3.23.1 (testImplementation only)
+- **Known Vulnerability**: XML External Entity (XXE) when parsing untrusted XML
+- **Impact**: LOW - This is a test-only dependency, not included in the deployed JAR
+- **Note**: Cannot upgrade to 3.27.7 as it requires Java 11+
 
-**Important**: While the original requirement was for Keycloak 17, we strongly recommend using Keycloak 26.2.2 or later in production due to the numerous critical security vulnerabilities present in Keycloak 17.0.0.
+### Important Understanding
 
-## Deployment Recommendations
+1. **Mapper vs Server**: These vulnerabilities are in the Keycloak server itself, not in this mapper plugin
+2. **CompileOnly Dependencies**: The Keycloak dependencies are `compileOnly` and are NOT included in the plugin JAR
+3. **Existing Risk**: If you're running Keycloak 15, you already have these vulnerabilities
+4. **Plugin Impact**: This plugin does not introduce new vulnerabilities; it works within your existing Keycloak environment
 
-1. **Update Keycloak**: If possible, upgrade your Keycloak installation to 26.2.2 or later
-2. **Java 17**: Ensure your Keycloak server is running on Java 17 or later
-3. **JAR Installation**: Deploy the compiled JAR to the `providers` directory in Keycloak
-4. **Restart Required**: Restart Keycloak after deploying the JAR
+### STRONGLY RECOMMENDED Actions
 
-## Ongoing Security
+1. **Upgrade Keycloak**: Migrate to Keycloak 26.2.2 or later as soon as possible
+2. **Use Main Branch**: Switch to the main branch of this project when you upgrade
+3. **Security Controls**: Implement additional security controls while running Keycloak 15:
+   - Network segmentation
+   - Web Application Firewall (WAF)
+   - Strict TLS/SSL configuration
+   - Regular security monitoring
+   - Limited internet exposure
 
-This project uses:
-- Latest stable Keycloak APIs (26.2.2)
-- Latest patched testing dependencies (AssertJ 3.27.7)
-- Modern Java version (17) with current security patches
+### Why This Branch Exists
 
-Regular dependency updates are recommended to maintain security posture.
+Organizations sometimes need time to plan and execute major upgrades. This branch provides a temporary solution for those actively planning migration from Keycloak 15 to current versions.
+
+**This branch is NOT intended for:**
+- New installations
+- Production systems (unless no other option exists)
+- Long-term use
+
+### Security Scanning Results (Plugin Code Only)
+
+- **CodeQL Scan**: ✅ No vulnerabilities in plugin code
+- **Code Review**: ✅ No issues in plugin code
+- **Plugin Dependencies**: ⚠️ Test dependencies have known issues but are not shipped
+
+### Migration Path
+
+For production security, please migrate to:
+1. **Keycloak 26.2.2+** (all known vulnerabilities patched)
+2. **Java 17+** (required for modern Keycloak)
+3. **Main branch** of this project (actively maintained)

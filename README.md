@@ -10,6 +10,32 @@ A Keycloak OIDC protocol mapper that routes user attributes to different token c
 - **Java Version**: Java 8 (minimum)
 - **Status**: Maintenance only - no new features will be added
 
+### 🔴 CRITICAL SECURITY WARNING
+
+**Keycloak 15.0.1 has numerous known security vulnerabilities that have been patched in later versions.** These vulnerabilities are present in the Keycloak server itself and affect ALL users running Keycloak 15, regardless of which plugins they use.
+
+Known vulnerabilities in Keycloak 15.0.1 include (but are not limited to):
+- mTLS Authentication Bypass
+- Denial of Service vulnerabilities
+- Session Fixation vulnerabilities
+- Cross-Site Scripting (XSS) vulnerabilities
+- Path Traversal vulnerabilities
+- Privilege Escalation issues
+- Improper Authorization issues
+- And many others (26+ known CVEs)
+
+**STRONGLY RECOMMENDED**: Upgrade to Keycloak 26.2.2 or later to address these security vulnerabilities.
+
+### Why This Branch Exists
+
+This branch exists ONLY for organizations that:
+1. Are unable to upgrade their Keycloak 15 installations immediately
+2. Understand and accept the security risks of running Keycloak 15
+3. Have compensating security controls in place
+4. Are actively planning migration to newer Keycloak versions
+
+**This branch should NOT be used for new installations or production systems.**
+
 ### For Users of Newer Keycloak Versions
 
 If you are using Keycloak 17 or later, please use the **main branch** instead, which targets:
@@ -17,6 +43,13 @@ If you are using Keycloak 17 or later, please use the **main branch** instead, w
 - Java 17+
 
 The main branch receives active development and security updates for the latest Keycloak versions.
+
+### Important Notes About Dependencies
+
+- The Keycloak dependencies in build.gradle are `compileOnly` - they are NOT included in the plugin JAR
+- These vulnerabilities exist in your Keycloak server installation, not in this mapper plugin
+- This plugin does not introduce new vulnerabilities; it works with your existing Keycloak installation
+- Upgrading this plugin will NOT fix the Keycloak server vulnerabilities - you must upgrade Keycloak itself
 
 ## Requirements
 
