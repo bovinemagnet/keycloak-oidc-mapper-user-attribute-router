@@ -2,12 +2,26 @@
 
 A Keycloak OIDC protocol mapper that routes user attributes to different token claims based on a type attribute.
 
-**Note**: This mapper is built against Keycloak 26.2.2 to avoid security vulnerabilities in older versions. It requires Java 17+ and should be compatible with Keycloak 17+ installations (running Java 17+), but for production use, we recommend updating to Keycloak 26.2.2 or later.
+## ⚠️ Legacy Branch - Keycloak 15 Compatibility
+
+**This is a legacy compatibility branch for Keycloak 15 users only.**
+
+- **Keycloak Version**: 15.0.1
+- **Java Version**: Java 8 (minimum)
+- **Status**: Maintenance only - no new features will be added
+
+### For Users of Newer Keycloak Versions
+
+If you are using Keycloak 17 or later, please use the **main branch** instead, which targets:
+- Keycloak 26.2.2+ (or compatible versions)
+- Java 17+
+
+The main branch receives active development and security updates for the latest Keycloak versions.
 
 ## Requirements
 
-- Java 17 or later
-- Keycloak 17+ (recommended: 26.2.2 or later)
+- Java 8 or later
+- Keycloak 15.x (WildFly-based)
 
 ## Overview
 
@@ -70,9 +84,13 @@ The JAR file will be created in `build/libs/`.
 
 ## Install
 
-1. Copy the JAR file to the Keycloak server's `providers` directory (Keycloak 17+) or `standalone/deployments` directory (older versions)
-2. Restart Keycloak
+### Keycloak 15 (WildFly-based)
+
+1. Copy the JAR file to the Keycloak server's `standalone/deployments` directory
+2. Restart Keycloak or wait for hot deployment
 3. The mapper will be available as "User Attribute Router" in the OIDC client mapper configuration
+
+**Note**: Keycloak 15 uses a WildFly-based deployment model. The JAR should be copied to `standalone/deployments/` (not the `providers/` directory used in Keycloak 17+).
 
 ## Multiple Mappers
 

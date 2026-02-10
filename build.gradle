@@ -11,7 +11,7 @@ plugins {
 
 group = 'com.sup.keycloak.oidc'
 ext.snapshotVersion = false // is it in dev mode.
-ext.baseVersion = "1.0.0" // the version of the project.
+ext.baseVersion = "1.0.0-kc15" // the version of the project.
 version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
 description = 'user-attribute-router'
 
@@ -24,28 +24,28 @@ repositories {
 
 dependencies {
 
-    compileOnly 'org.keycloak:keycloak-core:26.2.2'
-    compileOnly 'org.keycloak:keycloak-services:26.2.2'
-    compileOnly 'org.keycloak:keycloak-server-spi:26.2.2'
-    compileOnly 'org.keycloak:keycloak-server-spi-private:26.2.2'
+    compileOnly 'org.keycloak:keycloak-core:15.0.1'
+    compileOnly 'org.keycloak:keycloak-services:15.0.1'
+    compileOnly 'org.keycloak:keycloak-server-spi:15.0.1'
+    compileOnly 'org.keycloak:keycloak-server-spi-private:15.0.1'
     compileOnly 'org.jboss.logging:jboss-logging:3.4.1.Final'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.9.0'
-    testImplementation 'org.assertj:assertj-core:3.27.7'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
     testImplementation 'org.mockito:mockito-core:4.7.0'
     testImplementation 'com.google.guava:guava:31.1-jre'
 
-    testImplementation 'org.keycloak:keycloak-core:26.2.2'
-    testImplementation 'org.keycloak:keycloak-services:26.2.2'
-    testImplementation 'org.keycloak:keycloak-server-spi:26.2.2'
-    testImplementation 'org.keycloak:keycloak-server-spi-private:26.2.2'
+    testImplementation 'org.keycloak:keycloak-core:15.0.1'
+    testImplementation 'org.keycloak:keycloak-services:15.0.1'
+    testImplementation 'org.keycloak:keycloak-server-spi:15.0.1'
+    testImplementation 'org.keycloak:keycloak-server-spi-private:15.0.1'
 }
 
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 // give test dependencies access to compileOnly dependencies to emulate providedCompile
