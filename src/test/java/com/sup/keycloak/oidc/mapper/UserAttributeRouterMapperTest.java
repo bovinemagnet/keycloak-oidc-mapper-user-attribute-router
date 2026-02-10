@@ -143,9 +143,11 @@ public class UserAttributeRouterMapperTest {
 		assertThat(mapper.getConfig().get(OIDCAttributeMapperHelper.TOKEN_CLAIM_NAME)).isEqualTo(CLAIM_NAME);
 	}
 
+	@SuppressWarnings("PMD.CloseResource")
 	private UserSessionModel givenUserSession(String idValue, String idType) {
 		UserSessionModel userSession = Mockito.mock(UserSessionModel.class);
 		UserModel user = Mockito.mock(UserModel.class);
+		org.keycloak.models.KeycloakSession keycloakSession = Mockito.mock(org.keycloak.models.KeycloakSession.class);
 		when(userSession.getUser()).thenReturn(user);
 		when(user.getAttributeStream(TEST_ID_VALUE)).thenReturn(Arrays.asList(idValue).stream());
 		when(user.getAttributeStream(TEST_ID_TYPE)).thenReturn(Arrays.asList(idType).stream());
@@ -173,7 +175,14 @@ public class UserAttributeRouterMapperTest {
 	private AccessToken transformAccessToken(UserSessionModel userSessionModel, String routeMatch) {
 		final ProtocolMapperModel mappingModel = new ProtocolMapperModel();
 		mappingModel.setConfig(createConfig(routeMatch));
-		return new UserAttributeRouterMapper().transformAccessToken(new AccessToken(), mappingModel, null,
+		org.keycloak.models.KeycloakSession keycloakSession = Mockito.mock(org.keycloak.models.KeycloakSession.class);
+		org.keycloak.models.KeycloakContext keycloakContext = Mockito.mock(org.keycloak.models.KeycloakContext.class);
+		org.keycloak.models.ClientModel clientModel = Mockito.mock(org.keycloak.models.ClientModel.class);
+		
+		when(keycloakSession.getContext()).thenReturn(keycloakContext);
+		when(keycloakContext.getClient()).thenReturn(clientModel);
+		
+		return new UserAttributeRouterMapper().transformAccessToken(new AccessToken(), mappingModel, keycloakSession,
 				userSessionModel,
 				null);
 	}

@@ -1,6 +1,13 @@
 # keycloak-oidc-mapper-user-attribute-router
 
-A Keycloak 17 OIDC protocol mapper that routes user attributes to different token claims based on a type attribute.
+A Keycloak OIDC protocol mapper that routes user attributes to different token claims based on a type attribute.
+
+**Note**: This mapper is built against Keycloak 26.2.2 to avoid security vulnerabilities in older versions. It requires Java 17+ and should be compatible with Keycloak 17+ installations (running Java 17+), but for production use, we recommend updating to Keycloak 26.2.2 or later.
+
+## Requirements
+
+- Java 17 or later
+- Keycloak 17+ (recommended: 26.2.2 or later)
 
 ## Overview
 
